@@ -1,10 +1,12 @@
 package pl.altkom.web.servlet;
 
-import pl.altkom.web.exception.AuthenticationException;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import pl.altkom.web.Modul;
 import pl.altkom.web.model.User;
 import pl.altkom.web.service.SecurityManager;
-import pl.altkom.web.service.SecurityManagerImpl;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,13 +20,9 @@ public class LoginServlet extends HttpServlet {
     private SecurityManager securityManager;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        try {
-            securityManager = new SecurityManagerImpl();
-        } catch (AuthenticationException e) {
-            throw new ServletException("Cannot init connection to database", e);
-        }
+    public void init(ServletConfig config) throws ServletException {
+        Injector injector = Guice.createInjector(new Modul());
+        securityManager = injector.getInstance(SecurityManager.class);
     }
 
     @Override

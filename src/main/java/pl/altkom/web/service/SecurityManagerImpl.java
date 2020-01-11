@@ -8,16 +8,14 @@ import pl.altkom.web.exception.UsernameAlreadyTakenException;
 import pl.altkom.web.exception.WrongPasswordException;
 import pl.altkom.web.model.User;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SecurityManagerImpl implements SecurityManager {
 
+    @Inject
     private UserDao userDao;
-
-    public SecurityManagerImpl() throws AuthenticationException {
-        userDao = new UserDaoImpl();
-    }
 
     @Override
     public boolean isCorrectPassword(String login, String password) {
